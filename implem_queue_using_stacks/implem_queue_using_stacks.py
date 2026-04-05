@@ -1,29 +1,41 @@
 '''module implementing queue using stacks'''
+class Node:
+    '''class node'''
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
 class Stack:
     '''class stack'''
     def __init__(self):
-        self.stack_data = []
+        self.top = None
+        self.length = 0
 
     def push(self, x: int) -> None:
         '''adds element to stack'''
-        self.stack_data.append(x)
+        node = Node(x)
+        node.next = self.top
+        self.top = node
+        self.length += 1
 
     def pop(self) -> int:
         '''returns and deletes element from stack'''
-        return self.stack_data.pop()
+        res = self.top.data
+        self.top = self.top.next
+        self.length -= 1
+        return res
 
     def peek(self) -> int:
         '''returns first element of stack'''
-        return self.stack_data[-1]
+        return self.top.data
 
     def size(self) -> int:
         '''returns length of stack'''
-        return len(self.stack_data)
+        return self.length
 
     def is_empty(self) -> bool:
         '''returns bool if stack is empty'''
-        return len(self.stack_data) == 0
+        return self.top is None
 
 class MyQueue:
     '''class queue'''

@@ -1,32 +1,52 @@
 '''module implementing stack using queues'''
+
+class Node:
+    '''class node'''
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
 class Queue:
     '''class queue'''
     def __init__(self):
-        self.queue_data = []
+        self.head = None
+        self.tail = None
+        self.length = 0
 
     def push(self, x: int) -> None:
-        '''adds element to queue'''
-        self.queue_data.append(x)
+        '''adds element to the back of queue'''
+        node = Node(x)
+        if self.tail:
+            self.tail.next = node
+        self.tail = node
+        if self.head is None:
+            self.head = node
+        self.length += 1
 
     def pop(self) -> int:
         '''returns and deletes first element from queue'''
-        return self.queue_data.pop(0)
+        res = self.head.data
+        self.head = self.head.next
+        if self.head is None:
+            self.tail = None
+        self.length -= 1
+        return res
 
     def peek(self) -> int:
         '''returns first element of queue'''
-        return self.queue_data[0]
+        return self.head.data
 
     def size(self) -> int:
         '''returns length of queue'''
-        return len(self.queue_data)
+        return self.length
 
     def is_empty(self) -> bool:
         '''returns bool if queue is empty'''
-        return len(self.queue_data) == 0
-
+        return self.head is None
 
 class MyStack:
-    '''class stack'''
+    '''class stack implemented via two queues'''
     def __init__(self):
         self.input_queue = Queue()
         self.output_queue = Queue()
@@ -44,7 +64,7 @@ class MyStack:
         return res
 
     def top(self) -> int:
-        '''returns last element of stack'''
+        '''returns last added element of stack'''
         while self.input_queue.size() != 1:
             self.output_queue.push(self.input_queue.pop())
         res = self.input_queue.peek()
@@ -55,7 +75,6 @@ class MyStack:
     def empty(self) -> bool:
         '''returns bool if stack is empty'''
         return self.input_queue.is_empty() and self.output_queue.is_empty()
-
 
 
 # Your MyStack object will be instantiated and called as such:
